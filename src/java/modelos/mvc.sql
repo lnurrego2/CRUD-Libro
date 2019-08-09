@@ -22,3 +22,5 @@ describe usuario;
 INSERT INTO usuario VALUES (1111,'Yuliano','Quiñones','yq@yq.co','admin'),(2222,'Felipe','Aguilera','fa@fa.co','admin');
 
 SELECT * FROM usuario WHERE 1;
+
+ALTER TABLE usuario ADD COLUMN telefono BIGINT NOT NULL AFTER correo;
