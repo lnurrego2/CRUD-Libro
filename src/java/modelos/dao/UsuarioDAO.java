@@ -188,4 +188,34 @@ public class UsuarioDAO implements InterfaceCRUD {
 
     }
 
+    public Object autenticar() {
+        try {
+            String consulta = "SELECT * FROM usuario WHERE cedula=? AND clave=? AND estado=true";
+            PreparedStatement ps = this.conn.prepareStatement(consulta);
+            ps.setLong(1, vo.getCedula());
+            ps.setString(2, vo.getClave());
+            ResultSet resultSet = ps.executeQuery();
+
+            UsuarioVO temp = new UsuarioVO();
+            while (resultSet.next()) {
+                temp.setNombre(resultSet.getString("nombre"));
+                temp.setApellido(resultSet.getString("apellido"));
+                temp.setCorreo(resultSet.getString("correo"));
+                temp.setRol(resultSet.getString("rol"));
+                temp.setTelefono(resultSet.getLong("telefono"));
+
+            }
+            if (temp.getNombre() != null) {
+                return temp;
+            } else {
+                return null;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return null;
+    }
+    
 }
