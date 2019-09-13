@@ -5,6 +5,7 @@
  */
 package controlador;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,7 +20,7 @@ import modelos.vo.UsuarioVO;
  *
  * @author Sena
  */
-@WebServlet(name = "UsuarioControlador", urlPatterns = {"/usuario/listarPrueba","/usuario/listar", "/usuario/consultar", "/usuario/actualizar", "/usuario/eliminar", "/usuario/registrar", "/usuario/autenticar"})
+@WebServlet(name = "UsuarioControlador", urlPatterns = {"/usuario/listar", "/usuario/consultar", "/usuario/actualizar", "/usuario/eliminar", "/usuario/registrar", "/usuario/autenticar"})
 public class UsuarioControlador extends HttpServlet {
 
     /**
@@ -37,39 +38,27 @@ public class UsuarioControlador extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
 
-            out.println("<h1>" + request.getServletPath() + "</h1>");
+//            out.println("<h1>" + request.getServletPath() + "</h1>");
             System.out.println("");
-            
+
             UsuarioDAO usuDAO;
             UsuarioVO usuVO;
+            Gson json = new Gson();
+            String mensaje = null;
 
             String ruta = request.getServletPath();
             switch (ruta) {
                 case "/usuario/consultar":
                     break;
                 case "/usuario/listarPrueba":
-                    UsuarioDAO udao = new UsuarioDAO(); 
-                    String temp = "<table border='1'><thead><tr><th>CÉDULA</th><th>NOMBRE</th><th>ROL</th></tr></thead><tbody>";
-                    for(Object obj :udao.listar()){
-                        UsuarioVO usu = (UsuarioVO) obj;
-                        
-                        temp+="<tr><td>"+usu.getCedula()+"</td><td>"+usu.getNombre()+"</td><td>"+usu.getRol()+"</td></tr>"; 
-                        
-                    }
-                    temp+="</tbody></table>";
-                    out.println(temp);
+
                     break;
-                case "/usuario/listar":
-                    UsuarioDAO udao1 = new UsuarioDAO();                                         
-                    request.setAttribute("lista",udao1.listar());
-                    request.getRequestDispatcher("/listaUsuario.jsp").forward(request, response);
-                    break;                    
                 case "/usuario/autenticar":
                     break;
                 case "/usuario/registrar":
-                    usuVO= new UsuarioVO();
-                    usuDAO= new UsuarioDAO(usuVO);
-                    
+                    usuVO = new UsuarioVO();
+                    usuDAO = new UsuarioDAO(usuVO);
+
                     usuVO.setCedula(Long.parseLong(request.getParameter("cedula")));
                     usuVO.setNombre(String.valueOf(request.getParameter("nombre")));
                     usuVO.setApellido(String.valueOf(request.getParameter("apellido")));
@@ -77,23 +66,36 @@ public class UsuarioControlador extends HttpServlet {
                     usuVO.setRol(String.valueOf(request.getParameter("rol")));
                     usuVO.setTelefono(Long.parseLong(request.getParameter("telefono")));
                     usuVO.setClave(String.valueOf(request.getParameter("clave")));
-                    
-                    if(usuDAO.registrar()){
+
+                    if (usuDAO.registrar()) {
                         out.println("usuario registrado");
-                    }else{
+                    } else {
                         out.println("falla al registrar");
                     }
-                    
-                    
-                    
+                    break;
+                case "/usuario/listar":
+                    usuDAO = new UsuarioDAO();
+                    mensaje = json.toJson(usuDAO.listar());
                     break;
                 case "/usuario/actualizar":
                     break;
                 case "/usuario/eliminar":
+                    usuVO = new UsuarioVO();
+                    usuVO.setCedula(Long.parseLong(request.getParameter("cedula")));
+                    usuDAO = new UsuarioDAO(usuVO);
+                    if (usuDAO.eliminar()) {
+                        mensaje = "Usuario eliminado exitosamente";
+                    } else {
+                        mensaje = "Usuario no existe";
+                    }
                     break;
             }
 
-        }catch(Exception e){
+            response.setContentType("Application/json");
+            out.print(mensaje);          
+            out.flush();
+
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }

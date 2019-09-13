@@ -64,8 +64,8 @@ public class UsuarioDAO implements InterfaceCRUD {
     @Override
     public boolean eliminar() {
         try {
-            if (this.consultar() == null) {
-                String sentencia = "UPDATE usuario"
+            if (this.consultar() != null) {
+                String sentencia = "UPDATE usuario "
                         + "SET estado=false, f_actualizacion=CURRENT_TIMESTAMP "
                         + "WHERE cedula=? ";
                 PreparedStatement ps = this.conn.prepareStatement(sentencia);
