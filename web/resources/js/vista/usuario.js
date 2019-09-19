@@ -7,6 +7,10 @@
 var usuario = {
 
     init: function () {
+        
+        $("#btnRegistrarUsuario").click(function(){
+            usuario.desplegarVistaRegistrar()
+        })
         $.ajax({
             url: "./usuario/listar",
             dataType: "json",
@@ -48,9 +52,12 @@ var usuario = {
             
         })
         $(".btnEliminarUsuario").click(function () {
+            //captura la cédula con base en el atributo data-id
             var cedula= $(this).attr("data-id")
+            
+            //manipulay desplegar modal
             $("#exampleModal .modal-body").html("¿Desea eliminar al usuario con cédula: " + $(this).attr("data-id")+ " ?")
-            $("#exampleModal").modal()
+            $("#exampleModal").modal() //desplegar modal
             $(".btnModalAceptar").click(function(){
                 console.log("desde eliminar")
                 usuario.eliminarUsuario(cedula)
@@ -64,8 +71,9 @@ var usuario = {
             type:'post',
             data:{cedula:cedula},
             dataType:'json',
-            sucess:function(resultado){
+            success:function(resultado){
                 console.log(resultado)
+                $("#exampleModal").modal('toggle')
                 usuario.init()
             },
             error:function(error){
@@ -73,6 +81,12 @@ var usuario = {
             }
         })
     },
+    desplegarVistaRegistrar:function(){
+        $("#exampleModal .modal-body").load("./registrarUsuario.jsp")
+        $("#exampleModal").modal('toggle') //desplegar modal
+        $(".modal-header h5").html("<h2>REGISTRAR USUARIO</h2>")
+        $(".modal-footer").hide()
+    }
 
 }
 usuario.init()

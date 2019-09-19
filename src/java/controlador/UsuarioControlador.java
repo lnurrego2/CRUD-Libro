@@ -50,9 +50,6 @@ public class UsuarioControlador extends HttpServlet {
             switch (ruta) {
                 case "/usuario/consultar":
                     break;
-                case "/usuario/listarPrueba":
-
-                    break;
                 case "/usuario/autenticar":
                     break;
                 case "/usuario/registrar":
@@ -68,9 +65,9 @@ public class UsuarioControlador extends HttpServlet {
                     usuVO.setClave(String.valueOf(request.getParameter("clave")));
 
                     if (usuDAO.registrar()) {
-                        out.println("usuario registrado");
+                        mensaje = json.toJson("usuario registrado");
                     } else {
-                        out.println("falla al registrar");
+                        mensaje = json.toJson("falla al registrar");
                     }
                     break;
                 case "/usuario/listar":
@@ -84,9 +81,9 @@ public class UsuarioControlador extends HttpServlet {
                     usuVO.setCedula(Long.parseLong(request.getParameter("cedula")));
                     usuDAO = new UsuarioDAO(usuVO);
                     if (usuDAO.eliminar()) {
-                        mensaje = "Usuario eliminado exitosamente";
+                        mensaje = json.toJson("Usuario eliminado exitosamente");
                     } else {
-                        mensaje = "Usuario no existe";
+                        mensaje = json.toJson("Usuario no existe");
                     }
                     break;
             }
