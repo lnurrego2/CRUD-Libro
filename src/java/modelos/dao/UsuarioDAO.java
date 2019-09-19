@@ -5,6 +5,7 @@
  */
 package modelos.dao;
 
+import com.mysql.jdbc.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -91,7 +92,7 @@ public class UsuarioDAO implements InterfaceCRUD {
                 String sentencia = "INSERT INTO usuario"
                         + "(cedula, nombre, apellido, correo, rol, telefono,clave, estado, f_actualizacion, f_creacion) "
                         + "VALUES(?,?,?,?,?,?,md5(?),true,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)";
-                PreparedStatement ps = this.conn.prepareStatement(sentencia);
+                PreparedStatement ps = this.conn.prepareStatement(sentencia,Statement.RETURN_GENERATED_KEYS);
                 ps.setLong(1, vo.getCedula());
                 ps.setString(2, vo.getNombre());
                 ps.setString(3, vo.getApellido());
@@ -101,6 +102,7 @@ public class UsuarioDAO implements InterfaceCRUD {
                 ps.setString(7, vo.getClave());
                 ps.execute();
 
+                ps.getGeneratedKeys();
                 return true;
             } else {
                 return false;
