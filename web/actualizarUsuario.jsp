@@ -33,7 +33,7 @@
         <label for="exampleFormControlInput1">Clave</label>
         <input type="text" class="form-control"  name="clave" >
     </div>            
-    <input type="submit" class="btn btn-info" name="REGISTRAR" id="btnEditarU" value="registrar"/>
+    <input type="submit" class="btn btn-info" name="ACTUALIZAR" id="btnActualizarU" value="actualizar"/>
 </form>
 
 <script src="resources/js/vista/actualizarUsuario.js" type="text/javascript"></script>

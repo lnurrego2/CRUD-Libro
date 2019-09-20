@@ -10,11 +10,11 @@ var actualizarUsuario={
         actualizarUsuario.consultarUsuario()
         
         
-        $("#formRegistrarUsuario").submit(function(){
+        $("#formEditarUsuario").submit(function(){
             return false;
         })
         
-        $("#btnRegistrarU").click(function(){
+        $("#btnActualizarU").click(function(){
             actualizarUsuario.validarCampos()
         })
     },
@@ -50,7 +50,7 @@ var actualizarUsuario={
             url:'./usuario/actualizar',
             type:'post',
             dataType:'json',
-            data:$("#formRegistrarUsuario").serialize(),
+            data:$("#formActualizarUsuario").serialize(),
             success:function(resultado){
               actualizarUsuario.mostrarMensaje(resultado)  
             },
