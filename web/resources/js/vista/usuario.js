@@ -46,9 +46,14 @@ var usuario = {
     },
     agregarEventos:function(){        
         $(".btnActualizarUsuario").click(function () {
-            $("#exampleModal .modal-body").html("Actualizar: " + $(this).attr("data-id"))
-            $("#exampleModal").modal()
-
+            //captura la cédula con base en el atributo data-id
+            var cedula= $(this).attr("data-id")
+            $("#exampleModal .modal-body").load("./actualizarUsuario.jsp")
+            $("#exampleModal").modal('toggle') //desplegar modal
+            $(".modal-header h5").html("<h2>ACTUALIZAR USUARIO</h2>")
+            $(".modal-footer").hide()
+            
+            localStorage.setItem("cedula",cedula)
             
         })
         $(".btnEliminarUsuario").click(function () {

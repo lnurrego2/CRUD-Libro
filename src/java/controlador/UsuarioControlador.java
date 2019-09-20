@@ -49,6 +49,15 @@ public class UsuarioControlador extends HttpServlet {
             String ruta = request.getServletPath();
             switch (ruta) {
                 case "/usuario/consultar":
+                    usuVO = new UsuarioVO();
+                    usuVO.setCedula(Long.parseLong(request.getParameter("cedula")));
+                    usuDAO = new UsuarioDAO(usuVO);
+                    Object obj=usuDAO.consultar();
+                    if(obj != null){
+                        mensaje = json.toJson(obj);
+                    }else{
+                        mensaje=json.toJson("usuario no existe");
+                    }
                     break;
                 case "/usuario/autenticar":
                     break;

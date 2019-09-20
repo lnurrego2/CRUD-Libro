@@ -42,6 +42,7 @@ public class UsuarioDAO implements InterfaceCRUD {
 
             UsuarioVO temp = new UsuarioVO();
             while (resultSet.next()) {
+                temp.setCedula(Long.parseLong(resultSet.getString("cedula")));
                 temp.setNombre(resultSet.getString("nombre"));
                 temp.setApellido(resultSet.getString("apellido"));
                 temp.setCorreo(resultSet.getString("correo"));
