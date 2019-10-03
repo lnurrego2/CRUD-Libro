@@ -12,22 +12,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import modelos.bd.ConexionSingleton;
-import modelos.vo.UsuarioVO;
+import modelos.vo.LibroVO;
+import modelos.vo.LibroVO;
 
 /**
  *
  * @author Sena
  */
-public class UsuarioDAO implements InterfaceCRUD {
+public class LibroDAO implements InterfaceCRUD {
 
     private Connection conn;
-    private UsuarioVO vo;
+    private LibroVO vo;
 
-    public UsuarioDAO() {
+    public LibroDAO() {
         conn = ConexionSingleton.obtenerConexion();
     }
 
-    public UsuarioDAO(UsuarioVO vo) {
+    public LibroDAO(LibroVO vo) {
         this.conn = ConexionSingleton.obtenerConexion();
         this.vo = vo;
     }
@@ -40,7 +41,7 @@ public class UsuarioDAO implements InterfaceCRUD {
             ps.setLong(1, vo.getCedula());
             ResultSet resultSet = ps.executeQuery();
 
-            UsuarioVO temp = new UsuarioVO();
+            LibroVO temp = new LibroVO();
             while (resultSet.next()) {
                 temp.setCedula(Long.parseLong(resultSet.getString("cedula")));
                 temp.setNombre(resultSet.getString("nombre"));
@@ -148,15 +149,15 @@ public class UsuarioDAO implements InterfaceCRUD {
     @Override
     public ArrayList<Object> listar() {
         try {
-            String consulta = "SELECT * FROM usuario WHERE estado = true";
+            String consulta = "SELECT * FROM libro WHERE 1";
             PreparedStatement ps = this.conn.prepareStatement(consulta);
             ResultSet resultSet = ps.executeQuery();
 
-            ArrayList<UsuarioVO> list = new ArrayList<UsuarioVO>();
+            ArrayList<LibroVO> list = new ArrayList<LibroVO>();
 
             while (resultSet.next()) {
-                UsuarioVO temp = new UsuarioVO();
-                temp.setCedula(resultSet.getLong("cedula"));
+                LibroVO temp = new LibroVO();
+                temp.setIsbn(resultSet.getInt("isbn"));
                 temp.setNombre(resultSet.getString("nombre"));
                 temp.setApellido(resultSet.getString("apellido"));
                 temp.setCorreo(resultSet.getString("correo"));
@@ -172,9 +173,9 @@ public class UsuarioDAO implements InterfaceCRUD {
     }
 
     public static void main(String[] args) {
-        UsuarioVO vo = new UsuarioVO();
+        LibroVO vo = new LibroVO();
         vo.setCedula(5555);
-        UsuarioDAO dao = new UsuarioDAO(vo);
+        LibroDAO dao = new LibroDAO(vo);
 
         vo.setCedula(3333);
         vo.setNombre("Danilo");
@@ -200,7 +201,7 @@ public class UsuarioDAO implements InterfaceCRUD {
             ps.setString(2, vo.getClave());
             ResultSet resultSet = ps.executeQuery();
 
-            UsuarioVO temp = new UsuarioVO();
+            LibroVO temp = new LibroVO();
             while (resultSet.next()) {
                 temp.setNombre(resultSet.getString("nombre"));
                 temp.setApellido(resultSet.getString("apellido"));

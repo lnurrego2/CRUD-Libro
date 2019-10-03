@@ -20,8 +20,8 @@ import modelos.vo.UsuarioVO;
  *
  * @author Sena
  */
-@WebServlet(name = "UsuarioControlador", urlPatterns = {"/usuario/listar", "/usuario/consultar", "/usuario/actualizar", "/usuario/eliminar", "/usuario/registrar", "/usuario/autenticar"})
-public class UsuarioControlador extends HttpServlet {
+@WebServlet(name = "LibroControlador", urlPatterns = {"libro/consultar","libro/listar"})
+public class LibroControlador extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,9 +36,7 @@ public class UsuarioControlador extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-
-//            out.println("<h1>" + request.getServletPath() + "</h1>");
+         //            out.println("<h1>" + request.getServletPath() + "</h1>");
             System.out.println("");
 
             UsuarioDAO usuDAO;

@@ -50,7 +50,7 @@ var actualizarUsuario={
             url:'./usuario/actualizar',
             type:'post',
             dataType:'json',
-            data:$("#formActualizarUsuario").serialize(),
+            data:$("#formEditarUsuario").serialize(),
             success:function(resultado){
               actualizarUsuario.mostrarMensaje(resultado)  
             },

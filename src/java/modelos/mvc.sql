@@ -68,8 +68,19 @@ INSERT INTO `usuario` (`cedula`, `nombre`, `apellido`, `correo`, `telefono`, `ro
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`cedula`);
-COMMIT;
-
+COMMIT;.0
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+select * from usuario;
+
+
+create table libro(
+    isbn int primary key not null,
+    nombre varchar(50) not null,
+    descripcion text not null,
+    publicacion year not null,
+    genero enum('suspenso','accion','comedia','comics','drama','romance','terror','ciencia ficcion') not null
+);
+
+describe libro;
