@@ -36,19 +36,19 @@ public class LibroDAO implements InterfaceCRUD {
     @Override
     public Object consultar() {
         try {
-            String consulta = "SELECT * FROM usuario WHERE cedula=? AND estado=true";
+            String consulta = "SELECT * FROM libro WHERE isbn=?";
             PreparedStatement ps = this.conn.prepareStatement(consulta);
-            ps.setLong(1, vo.getCedula());
+            ps.setLong(1, vo.getIsbn());
             ResultSet resultSet = ps.executeQuery();
 
             LibroVO temp = new LibroVO();
             while (resultSet.next()) {
-                temp.setCedula(Long.parseLong(resultSet.getString("cedula")));
+                temp.setIsbn((int) Long.parseLong(resultSet.getString("isbn")));
                 temp.setNombre(resultSet.getString("nombre"));
-                temp.setApellido(resultSet.getString("apellido"));
-                temp.setCorreo(resultSet.getString("correo"));
-                temp.setRol(resultSet.getString("rol"));
-                temp.setTelefono(resultSet.getLong("telefono"));
+                temp.setDescripcion(resultSet.getString("descripcion"));
+                //temp.setCorreo(resultSet.getString("correo"));
+                temp.setGenero(resultSet.getString("genero"));
+                temp.setPublicacion((int) resultSet.getLong("publicacion"));
 
             }
             if (temp.getNombre() != null) {
@@ -68,11 +68,11 @@ public class LibroDAO implements InterfaceCRUD {
     public boolean eliminar() {
         try {
             if (this.consultar() != null) {
-                String sentencia = "UPDATE usuario "
-                        + "SET estado=false, f_actualizacion=CURRENT_TIMESTAMP "
-                        + "WHERE cedula=? ";
+                String sentencia = "UPDATE libro "
+                        + "SET estado=false"
+                        + "WHERE isbn=? ";
                 PreparedStatement ps = this.conn.prepareStatement(sentencia);
-                ps.setLong(1, vo.getCedula());
+                ps.setLong(1, vo.getIsbn());
                 ps.execute();
 
                 return true;
@@ -91,17 +91,17 @@ public class LibroDAO implements InterfaceCRUD {
         try {
 
             if (this.consultar() == null) {
-                String sentencia = "INSERT INTO usuario"
-                        + "(cedula, nombre, apellido, correo, rol, telefono,clave, estado, f_actualizacion, f_creacion) "
-                        + "VALUES(?,?,?,?,?,?,md5(?),true,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)";
+                String sentencia = "INSERT INTO libro"
+                        + "(isbn, nombre, descripcion, genero, publicacion) "
+                        + "VALUES(?,?,?,?,?,?,md5(?)";
                 PreparedStatement ps = this.conn.prepareStatement(sentencia,Statement.RETURN_GENERATED_KEYS);
-                ps.setLong(1, vo.getCedula());
+                ps.setLong(1, vo.getIsbn());
                 ps.setString(2, vo.getNombre());
-                ps.setString(3, vo.getApellido());
-                ps.setString(4, vo.getCorreo());
-                ps.setString(5, vo.getRol());
-                ps.setLong(6, vo.getTelefono());
-                ps.setString(7, vo.getClave());
+                ps.setString(3, vo.getDescripcion());
+                //ps.setString(4, vo.getCorreo());
+                ps.setString(5, vo.getGenero());
+                ps.setLong(6, vo.getPublicacion());
+                //ps.setString(7, vo.getClave());
                 ps.execute();
 
                 ps.getGeneratedKeys();
@@ -121,17 +121,17 @@ public class LibroDAO implements InterfaceCRUD {
     public boolean actualizar() {
         try {
             if (this.consultar() != null) {
-                String sentencia = "UPDATE usuario "
-                        + " SET nombre=?, apellido=?, correo=?, rol=?, telefono=?, f_actualizacion=CURRENT_TIMESTAMP "
-                        + " WHERE cedula=? ";
+                String sentencia = "UPDATE libro "
+                        + " SET nombre=?, descripcion=?, genero=?, publicacion=? "
+                        + " WHERE isbn=? ";
                 System.out.println(sentencia);
                 PreparedStatement ps = this.conn.prepareStatement(sentencia);                
-                ps.setLong(6, vo.getCedula());
+                ps.setLong(6, vo.getIsbn());
                 ps.setString(1, vo.getNombre());
-                ps.setString(2, vo.getApellido());
-                ps.setString(3, vo.getCorreo());
-                ps.setString(4, vo.getRol());
-                ps.setLong(5, vo.getTelefono());
+                ps.setString(2, vo.getDescripcion());
+                //ps.setString(3, vo.getCorreo());
+                ps.setString(4, vo.getGenero());
+                ps.setLong(5, vo.getPublicacion());
                 ps.execute();
 
                 return true;
@@ -159,10 +159,10 @@ public class LibroDAO implements InterfaceCRUD {
                 LibroVO temp = new LibroVO();
                 temp.setIsbn(resultSet.getInt("isbn"));
                 temp.setNombre(resultSet.getString("nombre"));
-                temp.setApellido(resultSet.getString("apellido"));
-                temp.setCorreo(resultSet.getString("correo"));
-                temp.setRol(resultSet.getString("rol"));
-                temp.setTelefono(resultSet.getLong("telefono"));
+                temp.setDescripcion(resultSet.getString("descripcion"));
+                //temp.setCorreo(resultSet.getString("correo"));
+                temp.setGenero(resultSet.getString("genero"));
+                temp.setPublicacion((int) resultSet.getLong("publicacion"));
                 list.add(temp);
             }
             return (ArrayList<Object>) (Object) list;
@@ -174,16 +174,16 @@ public class LibroDAO implements InterfaceCRUD {
 
     public static void main(String[] args) {
         LibroVO vo = new LibroVO();
-        vo.setCedula(5555);
+        vo.setIsbn(001);
         LibroDAO dao = new LibroDAO(vo);
 
-        vo.setCedula(3333);
-        vo.setNombre("Danilo");
-        vo.setApellido("Montero");
-        vo.setRol("admin");
-        vo.setCorreo("dm@dm.co");
-        vo.setTelefono(300300300);
-        vo.setClave("123456");
+        vo.setIsbn(005);
+        vo.setNombre("Volar sobre el pantano");
+        vo.setDescripcion("irán entre sí a medida que se va desarrollando la narración. Uno de los personajes es Zahid, un hombre que se ha visto involucrado en una pandilla para ser aceptado por el resto.");
+        vo.setGenero("drama");
+        //vo.setCorreo("dm@dm.co");
+        vo.setPublicacion(1995);
+        //vo.setClave("123456");
         
         if (dao.registrar()) {
             System.out.println("registrado exitosamente");
@@ -195,19 +195,19 @@ public class LibroDAO implements InterfaceCRUD {
 
     public Object autenticar() {
         try {
-            String consulta = "SELECT * FROM usuario WHERE cedula=? AND clave=? AND estado=true";
+            String consulta = "SELECT * FROM libro WHERE isbn=?";
             PreparedStatement ps = this.conn.prepareStatement(consulta);
-            ps.setLong(1, vo.getCedula());
-            ps.setString(2, vo.getClave());
+            ps.setLong(1, vo.getIsbn());
+            //ps.setString(2, vo.getClave());
             ResultSet resultSet = ps.executeQuery();
 
             LibroVO temp = new LibroVO();
             while (resultSet.next()) {
                 temp.setNombre(resultSet.getString("nombre"));
-                temp.setApellido(resultSet.getString("apellido"));
-                temp.setCorreo(resultSet.getString("correo"));
-                temp.setRol(resultSet.getString("rol"));
-                temp.setTelefono(resultSet.getLong("telefono"));
+                temp.setDescripcion(resultSet.getString("descripcion"));
+                //temp.setCorreo(resultSet.getString("correo"));
+                temp.setGenero(resultSet.getString("genero"));
+                temp.setPublicacion((int) resultSet.getLong("publicacion"));
 
             }
             if (temp.getNombre() != null) {

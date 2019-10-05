@@ -83,4 +83,15 @@ create table libro(
     genero enum('suspenso','accion','comedia','comics','drama','romance','terror','ciencia ficcion') not null
 );
 
+--
+-- Volcado de datos para la tabla `libro`
+--
+
+INSERT INTO `usuario` (`isbn`, `nombre`, `descripcion`, `publicacion`, `genero`) VALUES
+(001, 'Si Decido Quedarme', 'Después de que un accidente automovilístico la deja entre la vida y la muerte, una adolescente enfrenta una decisión que determinará su destino final.', 2014, 'Romantico'),
+(002, 'Maldito Karma', 'Una mujer en Alemania durante toda su vida ha acumulado mucho mal karma. Un día que podía ser perfectamente el mejor día de su vida. ', 2007, 'comedia'),
+(003, 'Harry Potter y la piedra filosofal', 'Un mundo donde la magia se nota màs que nada', 1998, 'accion'),
+(004, 'El perro del hortelano', 'Todo empieza cuando Teodoro y Marcela están hablando en la terraza del castillo de la condesa Diana en Miranda', 1618, 'drama'),
+
 describe libro;
+select * from libro;

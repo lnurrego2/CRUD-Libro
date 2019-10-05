@@ -8,13 +8,13 @@ package controlador;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
+/*import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import modelos.dao.UsuarioDAO;
-import modelos.vo.UsuarioVO;
+import javax.servlet.http.HttpServletResponse;*/
+import modelos.dao.LibroDAO;
+import modelos.vo.LibroVO;
 
 /**
  *
@@ -39,74 +39,74 @@ public class LibroControlador extends HttpServlet {
          //            out.println("<h1>" + request.getServletPath() + "</h1>");
             System.out.println("");
 
-            UsuarioDAO usuDAO;
-            UsuarioVO usuVO;
+            LibroDAO libDAO;
+            LibroVO libVO;
             Gson json = new Gson();
             String mensaje = null;
 
             String ruta = request.getServletPath();
             switch (ruta) {
-                case "/usuario/consultar":
-                    usuVO = new UsuarioVO();
-                    usuVO.setCedula(Long.parseLong(request.getParameter("cedula")));
-                    usuDAO = new UsuarioDAO(usuVO);
-                    Object obj=usuDAO.consultar();
+                case "/libro/consultar":
+                    libVO = new LibroVO();
+                    libVO.setIsbn(Long.parseLong(request.getParameter("isbn")));
+                    libDAO = new LibroDAO(libVO);
+                    Object obj=libDAO.consultar();
                     if(obj != null){
                         mensaje = json.toJson(obj);
                     }else{
-                        mensaje=json.toJson("usuario no existe");
+                        mensaje=json.toJson("libro no existe");
                     }
                     break;
-                case "/usuario/autenticar":
+                case "/libro/autenticar":
                     break;
-                case "/usuario/registrar":
-                    usuVO = new UsuarioVO();
-                    usuDAO = new UsuarioDAO(usuVO);
+                case "/libro/registrar":
+                    libVO = new LibroVO();
+                    libDAO = new LibroDAO(libVO);
 
-                    usuVO.setCedula(Long.parseLong(request.getParameter("cedula")));
-                    usuVO.setNombre(String.valueOf(request.getParameter("nombre")));
-                    usuVO.setApellido(String.valueOf(request.getParameter("apellido")));
-                    usuVO.setCorreo(String.valueOf(request.getParameter("correo")));
-                    usuVO.setRol(String.valueOf(request.getParameter("rol")));
-                    usuVO.setTelefono(Long.parseLong(request.getParameter("telefono")));
-                    usuVO.setClave(String.valueOf(request.getParameter("clave")));
+                    libVO.setIsbn(Long.parseLong(request.getParameter("isbn")));
+                    libVO.setNombre(String.valueOf(request.getParameter("nombre")));
+                    libVO.setDescripcion(String.valueOf(request.getParameter("descripcion")));
+                    //libVO.setCorreo(String.valueOf(request.getParameter("correo")));
+                    libVO.setGenero(String.valueOf(request.getParameter("rol")));
+                    libVO.setPublicacion(Long.parseLong(request.getParameter("telefono")));
+                    //libVO.setClave(String.valueOf(request.getParameter("clave")));
 
-                    if (usuDAO.registrar()) {
-                        mensaje = json.toJson("usuario registrado");
+                    if (libDAO.registrar()) {
+                        mensaje = json.toJson("libro registrado");
                     } else {
                         mensaje = json.toJson("falla al registrar");
                     }
                     break;
-                case "/usuario/listar":
-                    usuDAO = new UsuarioDAO();
-                    mensaje = json.toJson(usuDAO.listar());
+                case "/libro/listar":
+                    libDAO = new LibroDAO();
+                    mensaje = json.toJson(libDAO.listar());
                     break;
-                case "/usuario/actualizar":
-                    usuVO = new UsuarioVO();
-                    usuDAO = new UsuarioDAO(usuVO);
+                case "/libro/actualizar":
+                    libVO = new LibroVO();
+                    libDAO = new LibroDAO(libVO);
 
-                    usuVO.setCedula(Long.parseLong(request.getParameter("cedula")));
-                    usuVO.setNombre(String.valueOf(request.getParameter("nombre")));
-                    usuVO.setApellido(String.valueOf(request.getParameter("apellido")));
-                    usuVO.setCorreo(String.valueOf(request.getParameter("correo")));
-                    usuVO.setRol(String.valueOf(request.getParameter("rol")));
-                    usuVO.setTelefono(Long.parseLong(request.getParameter("telefono")));
-                    usuVO.setClave(String.valueOf(request.getParameter("clave")));
+                    libVO.setIsbn(Long.parseLong(request.getParameter("isbn")));
+                    libVO.setNombre(String.valueOf(request.getParameter("nombre")));
+                    libVO.setDescripcion(String.valueOf(request.getParameter("descripcion")));
+                    //libVO.setCorreo(String.valueOf(request.getParameter("correo")));
+                    libVO.setGenero(String.valueOf(request.getParameter("rol")));
+                    libVO.setPublicacion(Long.parseLong(request.getParameter("telefono")));
+                    //libVO.setClave(String.valueOf(request.getParameter("clave")));
 
-                    if (usuDAO.actualizar()) {
-                        mensaje = json.toJson("usuario editado");
+                    if (libDAO.actualizar()) {
+                        mensaje = json.toJson("libro editado");
                     } else {
                         mensaje = json.toJson("falla al editar");
                     }
                     break;
-                case "/usuario/eliminar":
-                    usuVO = new UsuarioVO();
-                    usuVO.setCedula(Long.parseLong(request.getParameter("cedula")));
-                    usuDAO = new UsuarioDAO(usuVO);
-                    if (usuDAO.eliminar()) {
-                        mensaje = json.toJson("Usuario eliminado exitosamente");
+                case "/libro/eliminar":
+                    libVO = new LibroVO();
+                    libVO.setIsbn(Long.parseLong(request.getParameter("isbn")));
+                    libDAO = new LibroDAO(libVO);
+                    if (libDAO.eliminar()) {
+                        mensaje = json.toJson("Libro eliminado exitosamente");
                     } else {
-                        mensaje = json.toJson("Usuario no existe");
+                        mensaje = json.toJson("Libro no existe");
                     }
                     break;
             }
